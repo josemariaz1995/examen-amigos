@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { FaTimes, FaPencilAlt, FaStar } from "react-icons/fa";
+import { DatosAmigosContext } from "../context/DatosAmigosContext";
 
 export const Tarjeta = (props) => {
   const {
@@ -6,11 +8,10 @@ export const Tarjeta = (props) => {
     borrarAmigo,
     setModificar,
     setEditar,
-    setNombre,
-    setApellido,
-    setValoracion,
     setId,
   } = props;
+  const { setNombre, setApellido, setValoracion } =
+    useContext(DatosAmigosContext);
   const estrellas = [];
   for (let i = 0; i < valoracion; i++) {
     estrellas.push(i);

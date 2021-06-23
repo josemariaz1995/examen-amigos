@@ -1,4 +1,7 @@
-export const Formulario = (props) => {
+import { useContext } from "react";
+import { DatosAmigosContext } from "../context/DatosAmigosContext";
+
+export const Formulario = () => {
   const {
     setNombre,
     setApellido,
@@ -6,7 +9,8 @@ export const Formulario = (props) => {
     nombre,
     apellido,
     valoracion,
-  } = props;
+  } = useContext(DatosAmigosContext);
+
   return (
     <>
       <div className=" col-3">
