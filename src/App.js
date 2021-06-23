@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useState } from "react";
 import { Formulario } from "./componentes/Formulario";
 import { Tarjeta } from "./componentes/Tarjeta";
+import { DatosAmigosContext } from "./context/DatosAmigosContext";
 
 function App() {
   const urlApi = "http://localhost:3001/amigos/";
@@ -74,68 +75,74 @@ function App() {
   };
   return (
     <>
-      <main className="container vw-100">
-        <header>
-          <h1>Gestión de mis {numeroAmigos} amigos</h1>
-        </header>
-        <form className="form-group row align-items-center justify-content-between">
-          {editar && (
-            <Formulario
-              setNombre={setNombre}
-              setApellido={setApellido}
-              setValoracion={setValoracion}
-              crearAmigo={crearAmigo}
-              modificar={modificar}
-              nombre={nombre}
-              apellido={apellido}
-              valoracion={valoracion}
-            />
-          )}
-          <div className="col-3 row ">
-            {!editar && (
-              <button
-                className="boton rounded mb-3 w-100"
-                onClick={editarAmigo}
-              >
-                Crear
-              </button>
-            )}
-
+      <DatosAmigosContext.Provider
+        value={{
+          setNombre,
+          setApellido,
+          setValoracion,
+          modificar,
+          nombre,
+          apellido,
+          valoracion,
+        }}
+      >
+        <main className="container vw-100">
+          <header>
+            <h1>Gestión de mis {numeroAmigos} amigos</h1>
+          </header>
+          <form className="form-group row align-items-center justify-content-between">
             {editar && (
-              <>
+              <Formulario crearAmigo={crearAmigo} modificar={modificar} />
+            )}
+            <div className="col-3 row ">
+              {!editar && (
                 <button
                   className="boton rounded mb-3 w-100"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    modificar ? modificarAmigo(id) : crearAmigo();
-                  }}
+                  onClick={editarAmigo}
                 >
-                  {modificar ? "Modificar" : "Crear"}
+                  Crear
                 </button>
-                <button className="boton rounded w-100" onClick={toggleEditar}>
-                  Cancelar
-                </button>
-              </>
-            )}
-          </div>
-        </form>
+              )}
 
-        <section className="row ">
-          {amigos.map((amigo) => (
-            <Tarjeta
-              key={amigo.id}
-              amigo={amigo}
-              borrarAmigo={borrarAmigo}
-              setModificar={setModificar}
-              setEditar={setEditar}
-              setNombre={setNombre}
-              setApellido={setApellido}
-              setValoracion={setValoracion}
-              setId={setId}
-            />
-          ))}
-        </section>
-      </main>
+              {editar && (
+                <>
+                  <button
+                    className="boton rounded mb-3 w-100"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      modificar ? modificarAmigo(id) : crearAmigo();
+                    }}
+                  >
+                    {modificar ? "Modificar" : "Crear"}
+                  </button>
+                  <button
+                    className="boton rounded w-100"
+                    onClick={toggleEditar}
+                  >
+                    Cancelar
+                  </button>
+                </>
+              )}
+            </div>
+          </form>
+
+          <section className="row ">
+            {amigos.map((amigo) => (
+              <Tarjeta
+                key={amigo.id}
+                amigo={amigo}
+                borrarAmigo={borrarAmigo}
+                setModificar={setModificar}
+                setEditar={setEditar}
+                setNombre={setNombre}
+                setApellido={setApellido}
+                setValoracion={setValoracion}
+                setId={setId}
+              />
+            ))}
+          </section>
+        </main>
+      </DatosAmigosContext.Provider>
     </>
   );
 }
